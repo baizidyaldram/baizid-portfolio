@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://your-project-name.vercel.app"),
+  metadataBase: new URL("https://baizid-portfolio.vercel.app"),
   title: "Baizid Yaldram — ML & AI Engineer",
   description:
     "Data Science graduate from University of Malaya building LLM-powered applications, hybrid ML pipelines, and multi-agent AI systems. Open to Data Analyst, Data Scientist, and AI Engineer roles.",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: "Baizid Yaldram — ML & AI Engineer",
     description:
       "Data Science graduate building LLM-powered applications, hybrid ML pipelines, and multi-agent AI systems.",
-    url: "https://your-project-name.vercel.app",
+    url: "https://baizid-portfolio.vercel.app",
     siteName: "Baizid Yaldram Portfolio",
     images: [
       {
@@ -54,10 +54,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} h-full`}>
-      <body className={`${spaceGrotesk.variable} ${inter.variable} w-full min-h-full flex flex-col antialiased`}>
+    <html lang="en">
+      <body className={`${spaceGrotesk.variable} ${inter.variable} antialiased`}>
         {children}
       </body>
     </html>
