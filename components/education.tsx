@@ -23,16 +23,21 @@ export function Education() {
   return (
     <section id="education" className="max-w-3xl mx-auto px-6 py-16 border-t border-border">
       <h2 className="text-2xl font-heading font-semibold text-foreground mb-8">Education</h2>
-      <div className="relative pl-6 border-l-2 border-border space-y-10">
-        {education.map((e) => (
-          <div key={e.degree} className="relative">
-            <div className="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-accent" />
-            <div className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-1">
-              <h3 className="text-lg font-semibold text-foreground">{e.degree}</h3>
-              <span className="text-sm text-muted-foreground">{e.date}</span>
+      <div className="space-y-8">
+        {education.map((e, i) => (
+          <div key={e.degree} className="flex gap-4">
+            <div className="flex flex-col items-center pt-2 shrink-0">
+              <div className="w-3 h-3 rounded-full bg-accent" />
+              {i < education.length - 1 && <div className="w-px flex-1 bg-border mt-1" />}
             </div>
-            <p className="text-muted-foreground">{e.school}</p>
-            <p className="text-base leading-relaxed text-muted-foreground mt-1">{e.detail}</p>
+            <div className="flex-1 pb-2">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-1">
+                <h3 className="text-lg font-semibold text-foreground">{e.degree}</h3>
+                <span className="text-sm text-muted-foreground">{e.date}</span>
+              </div>
+              <p className="text-muted-foreground">{e.school}</p>
+              <p className="text-base leading-relaxed text-muted-foreground mt-1">{e.detail}</p>
+            </div>
           </div>
         ))}
       </div>

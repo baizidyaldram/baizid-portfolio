@@ -30,7 +30,14 @@ export default async function ProjectPage({ params }: { params: ProjectPageParam
 
   return (
     <main className="w-full bg-background text-foreground min-h-screen">
-      <article className="max-w-2xl mx-auto px-6 py-16">
+      <article className="relative max-w-2xl mx-auto px-6 py-16">
+        <div
+          className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-10 w-[360px] h-[360px] rounded-full -z-10"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(239,131,84,0.15) 0%, transparent 70%)",
+          }}
+        />
         <h1 className="text-3xl md:text-4xl font-bold font-heading">{project.title}</h1>
         <p className="text-lg text-muted-foreground mt-4 leading-relaxed">{project.summary}</p>
 
