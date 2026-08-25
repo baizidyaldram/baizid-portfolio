@@ -15,7 +15,7 @@ export const projects: Project[] = [
     slug: "movie-recommender",
     summary: "SBERT semantic search, XGBoost re-ranking, and SVD fused via Reciprocal Rank Fusion, with LLM-generated explanations.",
     technologies: ["Python", "SBERT", "XGBoost", "SVD", "Streamlit", "OpenRouter"],
-    demoUrl: "https://movieapplication-wp4qjnosv4gmix7oypfcya.streamlit.app/",
+    demoUrl: "https://movie-application.streamlit.app/",
     githubUrl: "https://github.com/baizidyaldram/MovieApplication",
     featured: true,
     category: "AI/ML",

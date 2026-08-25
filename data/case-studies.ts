@@ -12,9 +12,9 @@ export type CaseStudy = {
 
 export const caseStudies: Record<string, CaseStudy> = {
   "movie-recommender": {
-    problem: "Most recommendation demos either do pure collaborative filtering (which fails on new or niche titles) or pure semantic search (which ignores what similar users actually liked). I wanted to build something that fuses both signals — plus a re-ranking layer and natural-language explanations — into a system that behaves like a real product feature, not a notebook demo.",
-    myRole: "I designed and built the entire pipeline solo: the hybrid scoring logic, the SVD and SBERT similarity layers, the XGBoost re-ranker, the LLM explanation layer, the Streamlit frontend, and the CI/CD deployment to Hugging Face Spaces via Docker.",
-    architecture: "Two entry points feed the same pipeline. A free-text query goes through SBERT semantic encoding. Picking a movie title instead goes through combined content + latent matching via SVD. Both paths converge through Reciprocal Rank Fusion, then get re-ranked by a trained XGBoost model, producing a final hybrid weighted score. The top-N results are then passed to OpenRouter's GPT-OSS-120B to generate a plain-language explanation of why each movie was recommended, and posters are pulled live from the TMDB API.",
+    problem: "Most recommendation demos either do pure collaborative filtering (which fails on new or niche titles) or pure semantic search (which ignores what similar users actually liked). I wanted to build something that fuses both signals and a re-ranking layer and natural-language explanations, into a system that behaves like a real product feature, not a notebook demo.",
+    myRole: "I designed and built the entire pipeline solo: the hybrid scoring logic, the SVD and SBERT similarity layers, the XGBoost re-ranker, the LLM explanation layer, the Streamlit frontend, and the deployment to Streamlit Community Cloud.",
+    architecture: "Two entry points feed the same pipeline. A free-text query goes through SBERT semantic encoding. Picking a movie title instead goes through combined content + latent matching via SVD. Both paths converge through Reciprocal Rank Fusion, then get re-ranked by a trained XGBoost model, producing a final hybrid weighted score. The top-N results are then passed to OpenRouter's GPT-OSS-120B to generate a plain-language explanation of why each movie was recommended, and posters are pulled live from the TMDB API. The app is deployed to Streamlit Community Cloud.",
     weights: [
       { label: "SBERT content similarity", value: "50%" },
       { label: "XGBoost re-ranking", value: "25%" },
@@ -26,8 +26,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       "Latent features: TruncatedSVD (scikit-learn) over the ~4,375-movie dataset",
       "Re-ranking: XGBoost trained to reorder the fused candidate list",
       "Explanations: OpenRouter GPT-OSS-120B, prompted per-recommendation",
-      "Serving: Streamlit frontend, Dockerized, deployed to Hugging Face Spaces",
-      "CI/CD: GitHub Actions auto-syncs every push on main to the Hugging Face Space",
+      "Serving: Streamlit frontend, deployed on Streamlit Community Cloud",
       "Artifact tracking: model files tracked with Git LFS rather than raw blobs",
     ],
     whyTheseChoices: "A single similarity method has a clear failure mode: pure content similarity recommends near-duplicates and ignores broader taste signals, while pure latent matching struggles on titles with sparse interaction data. Fusing four signals with empirically-tuned weights balances relevance against diversity. XGBoost re-ranking on top lets the system learn non-linear corrections a static weighted sum can't capture alone.",
@@ -38,7 +37,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { label: "F1 Score", value: "0.82" },
       { label: "AUC-ROC", value: "0.90" },
     ],
-    lessons: "Hybrid approaches genuinely do improve relevance over any single method — but tuning the fusion weights took more empirical iteration than expected, since SBERT and SVD scores live on different scales and needed calibration before they could be fairly combined. LLM explanations noticeably increase trust, but introduce a real dependency: API cost and latency need active guardrails.",
+    lessons: "Hybrid approaches genuinely do improve relevance over any single method, but tuning the fusion weights took more empirical iteration than expected, since SBERT and SVD scores live on different scales and needed calibration before they could be fairly combined. LLM explanations noticeably increase trust, but introduce a real dependency: API cost and latency need active guardrails.",
     futureImprovements: [
       "Move the LLM explanation call to an async/cached pattern to reduce perceived latency",
       "A/B test the fixed fusion weights against a learned weighting model",
@@ -48,7 +47,7 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
 
   "csv-insight-agents": {
-    problem: "Exploratory data analysis on a new CSV follows a predictable, repetitive sequence — check data quality, clean it, profile it statistically, visualize it, try some models, write up findings. Doing this manually for every new dataset is slow, and a lot of analysts skip steps under time pressure. I wanted to encode that workflow into an automated, auditable pipeline.",
+    problem: "Exploratory data analysis on a new CSV follows a predictable, repetitive sequence that is check data quality, clean it, profile it statistically, visualize it, try some models, write up findings. Doing this manually for every new dataset is slow, and a lot of analysts skip steps under time pressure. I wanted to encode that workflow into an automated, auditable pipeline.",
     myRole: "I designed the full six-agent architecture and built every agent: Data Quality, Data Cleaning, Statistical Analysis, Visualization, Modeling & Evaluation, and the AI Report Agent. I also built the shared Streamlit app, session-state system, and the visual design that ties every step together.",
     architecture: "A pipeline of six specialized agents shares state through a central Streamlit session manager. Each agent has a single responsibility: quality checks, cleaning, profiling, visualization, modeling, and reporting. The early stages run offline for cost and usability, while the final report can call OpenRouter once the user is ready for a narrative summary.",
     technicalApproach: [
@@ -61,7 +60,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
     whyTheseChoices: "Keeping agent boundaries clean made debugging and extension dramatically easier than a monolithic analysis script would have. It also made the experience more trustworthy, because each stage produces visible, inspectable outputs before the user moves on. Making the LLM dependency optional until the final report stage means the tool is still fully useful without an API key.",
     results: "The pipeline runs a full raw-CSV-to-written-report cycle end to end, including a one-click sample dataset so a reviewer can see the whole pipeline work without sourcing their own file. Exports are available in four formats at the end of the pipeline.",
-    lessons: "The cleanest design decision was keeping each agent focused on one job — it paid off repeatedly during debugging and when extending the pipeline later. I also learned that automatic visualization choices need more edge-case handling than expected, especially for binary flag columns, high-cardinality categoricals, and near-constant columns.",
+    lessons: "The cleanest design decision was keeping each agent focused on one job and it paid off repeatedly during debugging and when extending the pipeline later. I also learned that automatic visualization choices need more edge-case handling than expected, especially for binary flag columns, high-cardinality categoricals, and near-constant columns.",
     futureImprovements: [
       "Add support for larger-than-memory CSVs via chunked processing",
       "Let users manually override an agent's automatic decisions rather than only accepting the default",
@@ -83,8 +82,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       "Admin: a shared secret key gates the dashboard for a lightweight prototype workflow",
     ],
     whyTheseChoices: "Scoping the AI feature narrowly made it more trustworthy and much easier to ship in a short timeline. A broader chatbot would have added cost and unpredictability without proportional value to a 60-second flow. Choosing Supabase over a document store fit the genuinely relational shape of the vote data, and locking it down with Row Level Security from day one avoided a security review scramble later.",
-    results: "A complete, deployed voting flow with real database persistence — not a local-only or mocked demo. The admin dashboard gives a stakeholder-relevant view of totals and a leaderboard, and the landing page's live vote count pulls from the real database on load rather than a hardcoded number.",
-    lessons: "The biggest lesson was that scope matters — the strongest version of this product was a tightly bounded experience with one small, useful AI layer, not a broad conversational app. I also learned that locking down the database and API layer early prevents security issues from becoming a late-stage scramble.",
+    results: "A complete, deployed voting flow with real database persistence, not a local-only or mocked demo. The admin dashboard gives a stakeholder-relevant view of totals and a leaderboard, and the landing page's live vote count pulls from the real database on load rather than a hardcoded number.",
+    lessons: "The biggest lesson was that scope matters, the strongest version of this product was a tightly bounded experience with one small, useful AI layer, not a broad conversational app. I also learned that locking down the database and API layer early prevents security issues from becoming a late-stage scramble.",
     futureImprovements: [
       "Replace the shared admin key with proper auth (magic link or SSO via Supabase Auth)",
       "Add rate limiting on the vote-submission and career-match endpoints",

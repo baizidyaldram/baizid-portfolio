@@ -35,7 +35,7 @@ export function Education() {
                 <h3 className="text-lg font-semibold text-foreground">{e.degree}</h3>
                 <span className="text-sm text-muted-foreground">{e.date}</span>
               </div>
-              <p className="text-muted-foreground">{e.school}</p>
+              <p className="text-base text-muted-foreground">{e.school}</p>
               <p className="text-base leading-relaxed text-muted-foreground mt-1">{e.detail}</p>
             </div>
           </div>

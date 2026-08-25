@@ -11,7 +11,7 @@ export function Experience() {
             <h3 className="text-lg font-semibold text-foreground">Data Analyst Intern</h3>
             <span className="text-sm text-muted-foreground">Apr 2022 – Dec 2022</span>
           </div>
-          <p className="text-muted-foreground">Coders Ready India</p>
+          <p className="text-base text-muted-foreground">Coders Ready India</p>
           <ul className="mt-4 space-y-2">
             {[
               "Conducted exploratory data analysis on a U.S. COVID-19 dataset with 50,000+ records and 15 features using Python, Pandas, NumPy, Matplotlib, and Seaborn.",

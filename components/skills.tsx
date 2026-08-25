@@ -5,7 +5,7 @@ const skillGroups = [
   { label: "Cloud & Data", icon: CloudIcon, items: ["GCP", "BigQuery", "Hadoop", "HBase", "AWS", "Supabase"] },
   { label: "ML & Data Tools", icon: LayersIcon, items: ["Streamlit", "Plotly", "Pandas", "NumPy", "Scikit-learn", "XGBoost", "SBERT", "Power BI", "OpenRouter"] },
   { label: "Web Development", icon: GlobeIcon, items: ["Next.js", "React", "Vite", "Tailwind CSS", "Zustand", "Framer Motion", "Vercel"] },
-  { label: "Tools", icon: WrenchIcon, items: ["Git", "GitHub Actions", "Docker"] },
+  { label: "Tools", icon: WrenchIcon, items: ["Git"] },
 ];
 
 export function Skills() {
@@ -19,7 +19,7 @@ export function Skills() {
               <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center">
                 <group.icon className="w-3.5 h-3.5 text-accent" />
               </div>
-              <h3 className="text-sm font-medium text-foreground">{group.label}</h3>
+              <h3 className="text-base font-medium text-foreground">{group.label}</h3>
             </div>
             <div className="flex flex-wrap gap-2">
               {group.items.map((skill) => (

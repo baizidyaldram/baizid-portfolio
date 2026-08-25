@@ -64,11 +64,12 @@ export function Hero() {
       </motion.p>
 
       <motion.p variants={item} className="max-w-2xl text-muted-foreground text-lg leading-relaxed">
-        I'm a recent Master of Data Science graduate from the University of Malaya (4.0 GPA),
-        building LLM-powered applications, multi-agent AI systems, and hybrid ML pipelines that
-        go beyond notebooks into real, deployed products. My work spans recommendation engines,
-        automated data-analysis agents, and full-stack AI features — and I'm currently looking
-        for Data Analyst, Data Scientist, or AI Engineer roles in Malaysia.
+        I&apos;m a recent Master of Data Science graduate from the University of Malaya with a 4.0 GPA.
+        I enjoy working with data, machine learning, and AI, especially building practical
+        applications that solve real problems. I&apos;ve worked on projects involving recommendation
+        systems, automated data analysis, LLM applications, and machine learning pipelines. I&apos;m
+        currently looking for opportunities as a Data Analyst or AI Engineer in
+        Malaysia.
       </motion.p>
 
       <motion.div variants={item}>
