@@ -55,22 +55,24 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                       <span className="text-xs text-muted-foreground">Screenshot coming soon</span>
                     </div>
                   )}
-                  <span
-                    className="absolute top-4 left-4 text-xs font-medium px-2.5 py-1 rounded-full"
-                    style={{
-                      color: visual.accent,
-                      backgroundColor: `${visual.accent}1f`,
-                      border: `1px solid ${visual.accent}55`,
-                    }}
-                  >
-                    {project.category}
-                  </span>
                 </div>
 
                 <div className="p-6 md:p-8 flex flex-col justify-center gap-4">
-                  <h3 className="text-2xl font-heading font-semibold text-foreground">
-                    {project.title}
-                  </h3>
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="text-2xl font-heading font-semibold text-foreground">
+                      {project.title}
+                    </h3>
+                    <span
+                      className="shrink-0 rounded-full px-2.5 py-1 text-xs font-medium"
+                      style={{
+                        color: visual.accent,
+                        backgroundColor: `${visual.accent}1f`,
+                        border: `1px solid ${visual.accent}55`,
+                      }}
+                    >
+                      {project.category}
+                    </span>
+                  </div>
                   <p className="text-base leading-relaxed text-muted-foreground">{project.summary}</p>
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((technology) => (
