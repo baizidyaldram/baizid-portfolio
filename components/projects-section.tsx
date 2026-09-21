@@ -173,9 +173,11 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                     </Button>
                   </a>
                   <Link href={`/projects/${project.slug}`}>
-                    <Button size="sm" variant="ghost">
-                      Case Study
-                    </Button>
+                    <motion.span whileTap={{ scale: 0.94 }} className="inline-block">
+                      <Button size="sm" variant="ghost">
+                        Case Study
+                      </Button>
+                    </motion.span>
                   </Link>
                 </div>
               </div>

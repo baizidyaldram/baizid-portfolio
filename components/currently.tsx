@@ -10,7 +10,7 @@ const items = [
 
 export function Currently() {
   return (
-    <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-x-3 gap-y-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm text-muted-foreground">
+    <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-x-3 gap-y-2 rounded-2xl border border-border bg-secondary/60 px-4 py-3 text-sm text-muted-foreground">
       <span className="flex shrink-0 items-center gap-1.5 font-medium text-foreground">
         <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
