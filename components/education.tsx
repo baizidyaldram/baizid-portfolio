@@ -2,14 +2,8 @@ const education = [
   {
     degree: "Master of Data Science",
     school: "University of Malaya, Kuala Lumpur, Malaysia",
-    date: "Oct 2024 – Mar 2026",
+    date: "Oct 2024 – Nov 2026",
     detail: "GPA: 4.0",
-  },
-  {
-    degree: "Postgraduate Admission Preparation",
-    school: "Self-Study — India",
-    date: "Jan 2023 – Aug 2024",
-    detail: "Prepared for postgraduate admission in Data Science, self-studying ML and statistics ahead of entrance exams; subsequently selected for the Master's program at University of Malaya.",
   },
   {
     degree: "Bachelor of Science in Aeronautics",
