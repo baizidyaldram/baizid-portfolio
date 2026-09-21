@@ -1,15 +1,20 @@
-import { Metadata } from 'next';
-import { projects } from '@/data/projects';
-import { caseStudies } from '@/data/case-studies';
-import { Button } from '@/components/ui/button';
-import { notFound } from 'next/navigation';
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+import Link from "next/link";
+import { projects } from "@/data/projects";
+import { caseStudies } from "@/data/case-studies";
+import { projectVisuals } from "@/data/project-visuals";
+import { ArchitectureFlow } from "@/components/architecture-flow";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { notFound } from "next/navigation";
 
 type ProjectPageParams = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: ProjectPageParams }): Promise<Metadata> {
   const resolvedParams = await params;
   const project = projects.find((p) => p.slug === resolvedParams.slug);
-  if (!project) return { title: 'Project' };
+  if (!project) return { title: "Project" };
   return {
     title: `${project.title} — Baizid Yaldram`,
     description: project.summary,
@@ -21,84 +26,132 @@ export async function generateMetadata({ params }: { params: ProjectPageParams }
   };
 }
 
+function SectionHeading({ children, accent }: { children: ReactNode; accent: string }) {
+  return (
+    <h2 className="mt-14 mb-4 flex items-center gap-2.5 text-2xl font-heading font-semibold">
+      <span className="h-6 w-1.5 rounded-full" style={{ backgroundColor: accent }} />
+      {children}
+    </h2>
+  );
+}
+
 export default async function ProjectPage({ params }: { params: ProjectPageParams }) {
   const resolvedParams = await params;
   const project = projects.find((p) => p.slug === resolvedParams.slug);
   const cs = caseStudies[resolvedParams.slug];
+  const visual = projectVisuals[resolvedParams.slug];
 
   if (!project || !cs) return notFound();
 
+  const accent = visual?.accent ?? "var(--accent)";
+
   return (
-    <main className="w-full bg-background text-foreground min-h-screen">
-      <article className="relative max-w-2xl mx-auto px-6 py-16">
+    <main className="min-h-screen w-full bg-background text-foreground">
+      <div className="relative overflow-hidden border-b border-border">
         <div
-          className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-10 w-[360px] h-[360px] rounded-full -z-10"
+          className="pointer-events-none absolute inset-0"
           style={{
-            background:
-              "radial-gradient(circle, rgba(239,131,84,0.15) 0%, transparent 70%)",
+            background: `radial-gradient(ellipse 700px 400px at 50% -10%, ${accent}26 0%, transparent 70%)`,
           }}
         />
-        <h1 className="text-3xl md:text-4xl font-bold font-heading">{project.title}</h1>
-        <p className="text-lg text-muted-foreground mt-4 leading-relaxed">{project.summary}</p>
+        <div className="relative mx-auto max-w-2xl px-6 pb-10 pt-12">
+          <Link
+            href="/#projects"
+            className="mb-6 inline-flex items-center gap-2 text-base font-semibold text-foreground transition-colors hover:text-accent"
+          >
+            ← Back to projects
+          </Link>
 
-        <div className="flex gap-2 mt-6">
-          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-            <Button size="sm">Live Demo</Button>
-          </a>
-          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-            <Button size="sm" variant="outline">Source</Button>
-          </a>
+          <h1 className="text-3xl font-bold leading-tight font-heading md:text-4xl">{project.title}</h1>
+
+          <span
+            className="mt-3 inline-block rounded-full px-2.5 py-1 text-xs font-medium"
+            style={{ color: accent, backgroundColor: `${accent}1f`, border: `1px solid ${accent}55` }}
+          >
+            {project.category}
+          </span>
+
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{project.summary}</p>
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            {project.technologies.map((technology) => (
+              <Badge key={technology} variant="secondary" className="text-xs">
+                {technology}
+              </Badge>
+            ))}
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-2">
+            <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+              <Button size="sm" style={{ backgroundColor: accent, color: "var(--accent-foreground)" }}>
+                Live Demo
+              </Button>
+            </a>
+            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+              <Button size="sm" variant="outline">Source</Button>
+            </a>
+          </div>
         </div>
+      </div>
 
-        <p className="text-sm text-muted-foreground mt-6">{project.technologies.join(' · ')}</p>
+      <article className="mx-auto max-w-2xl px-6 pb-20">
+        {visual && (
+          <div className="mt-10 rounded-2xl border border-border p-5 md:p-6">
+            <ArchitectureFlow columns={visual.flow} accent={accent} />
+          </div>
+        )}
 
-        <hr className="my-10 border-border" />
-
-        <h2 className="text-2xl font-heading font-semibold mb-3">Problem</h2>
+        <SectionHeading accent={accent}>Problem</SectionHeading>
         <p className="text-base leading-relaxed text-muted-foreground">{cs.problem}</p>
 
-        <h2 className="text-2xl font-heading font-semibold mt-10 mb-3">My Role</h2>
+        <SectionHeading accent={accent}>My Role</SectionHeading>
         <p className="text-base leading-relaxed text-muted-foreground">{cs.myRole}</p>
 
-        <h2 className="text-2xl font-heading font-semibold mt-10 mb-3">Architecture</h2>
-        <p className="text-base leading-relaxed text-muted-foreground mb-6">{cs.architecture}</p>
+        <SectionHeading accent={accent}>Architecture</SectionHeading>
+        <p className="mb-6 text-base leading-relaxed text-muted-foreground">{cs.architecture}</p>
 
         {cs.weights && (
-          <div className="space-y-3">
-            {cs.weights.map((w) => (
-              <div key={w.label}>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="font-medium">{w.label}</span>
-                  <span className="text-muted-foreground">{w.value}</span>
+          <div className="space-y-4 rounded-2xl border border-border p-5">
+            {cs.weights.map((weight) => (
+              <div key={weight.label}>
+                <div className="mb-1.5 flex justify-between text-sm">
+                  <span className="font-medium">{weight.label}</span>
+                  <span className="text-muted-foreground">{weight.value}</span>
                 </div>
-                <div className="h-2 rounded-full bg-secondary overflow-hidden">
-                  <div className="h-full bg-primary rounded-full" style={{ width: w.value }} />
+                <div className="h-2 overflow-hidden rounded-full bg-secondary">
+                  <div className="h-full rounded-full" style={{ width: weight.value, backgroundColor: accent }} />
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        <h2 className="text-2xl font-heading font-semibold mt-10 mb-3">Technical Approach</h2>
-        <ul className="space-y-2">
+        <SectionHeading accent={accent}>Technical Approach</SectionHeading>
+        <ul className="space-y-2.5">
           {cs.technicalApproach.map((item) => (
             <li key={item} className="flex gap-3 text-base leading-relaxed text-muted-foreground">
-              <span className="text-primary mt-1">•</span>
+              <span className="mt-1 shrink-0" style={{ color: accent }}>•</span>
               <span>{item}</span>
             </li>
           ))}
         </ul>
 
-        <h2 className="text-2xl font-heading font-semibold mt-10 mb-3">Why These Choices</h2>
+        <SectionHeading accent={accent}>Why These Choices</SectionHeading>
         <p className="text-base leading-relaxed text-muted-foreground">{cs.whyTheseChoices}</p>
 
-        <h2 className="text-2xl font-heading font-semibold mt-10 mb-3">Results</h2>
+        <SectionHeading accent={accent}>Results</SectionHeading>
         {Array.isArray(cs.results) ? (
-          <div className="flex flex-wrap gap-x-8 gap-y-2 text-base">
-            {cs.results.map((r) => (
-              <div key={r.label}>
-                <span className="text-muted-foreground">{r.label}: </span>
-                <span className="font-semibold">{r.value}</span>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {cs.results.map((result) => (
+              <div
+                key={result.label}
+                className="rounded-xl border border-border p-4 text-center"
+                style={{ backgroundColor: `${accent}0d` }}
+              >
+                <div className="text-xl font-semibold font-heading" style={{ color: accent }}>
+                  {result.value}
+                </div>
+                <div className="mt-1 text-xs text-muted-foreground">{result.label}</div>
               </div>
             ))}
           </div>
@@ -106,18 +159,26 @@ export default async function ProjectPage({ params }: { params: ProjectPageParam
           <p className="text-base leading-relaxed text-muted-foreground">{cs.results}</p>
         )}
 
-        <h2 className="text-2xl font-heading font-semibold mt-10 mb-3">Lessons Learned</h2>
-        <p className="text-base leading-relaxed text-muted-foreground">{cs.lessons}</p>
+        <SectionHeading accent={accent}>Lessons Learned</SectionHeading>
+        <p className="border-l-2 pl-4 text-base italic leading-relaxed text-muted-foreground" style={{ borderColor: accent }}>
+          {cs.lessons}
+        </p>
 
-        <h2 className="text-2xl font-heading font-semibold mt-10 mb-3">Future Improvements</h2>
-        <ul className="space-y-2">
+        <SectionHeading accent={accent}>Future Improvements</SectionHeading>
+        <ul className="space-y-2.5">
           {cs.futureImprovements.map((item) => (
             <li key={item} className="flex gap-3 text-base leading-relaxed text-muted-foreground">
-              <span className="text-primary mt-1">•</span>
+              <span className="mt-1 shrink-0" style={{ color: accent }}>•</span>
               <span>{item}</span>
             </li>
           ))}
         </ul>
+
+        <div className="mt-16 border-t border-border pt-6">
+          <Link href="/#projects" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+            ← All projects
+          </Link>
+        </div>
       </article>
     </main>
   );

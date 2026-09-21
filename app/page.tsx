@@ -8,6 +8,7 @@ import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { TechMarquee } from "@/components/tech-marquee";
+import { Nav } from "@/components/nav";
 import { projects } from "@/data/projects";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
 
   return (
     <main className="w-full bg-background text-foreground min-h-screen">
+      <Nav />
       <Hero />
       <TechMarquee />
 
